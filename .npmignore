@@ -1,0 +1,11 @@
+src/
+tests/
+tsconfig.json
+tsdown.config.ts
+.github/
+_source-reference/
+audit.md
+*.tgz
+*.mp3
+.gitignore
+CLAUDE.md

@@ -1,0 +1,15 @@
+{
+  "id": "murf",
+  "name": "Murf Falcon TTS",
+  "version": "0.1.0",
+  "providerAuthEnvVars": {
+    "murf": [
+      "MURF_API_KEY"
+    ]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
