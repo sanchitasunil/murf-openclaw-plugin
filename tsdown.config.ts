@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   target: "node22",
-  external: ["openclaw"]
+  deps: { neverBundle: ["openclaw"] }
 });
