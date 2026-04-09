@@ -77,10 +77,8 @@ function asNumber(value: unknown): number | undefined {
   return undefined;
 }
 
-/** Murf defaults: 24 kHz (Falcon) vs 44.1 kHz (Gen2) per API schema notes. */
-function defaultSampleRateForModel(model: string): number {
-  return model === "GEN2" ? 44_100 : 24_000;
-}
+/** Murf Falcon default sample rate: 24 kHz per API schema notes. */
+const DEFAULT_SAMPLE_RATE = 24_000;
 
 // ---------------------------------------------------------------------------
 // Config normalization (from rawConfig)
@@ -111,7 +109,7 @@ export function normalizeMurfProviderConfig(
       trimToUndefined(raw.region) ?? DEFAULT_REGION,
     ),
     format: normalizeFormat(raw.format) ?? DEFAULT_FORMAT,
-    sampleRate: asNumber(raw.sampleRate) ?? defaultSampleRateForModel(model),
+    sampleRate: asNumber(raw.sampleRate) ?? DEFAULT_SAMPLE_RATE,
   };
 }
 
@@ -139,8 +137,7 @@ export function readMurfProviderConfig(
       trimToUndefined(config.region) ?? defaults.region,
     ),
     format: normalizeFormat(config.format) ?? defaults.format,
-    sampleRate:
-      asNumber(config.sampleRate) ?? defaultSampleRateForModel(model),
+    sampleRate: asNumber(config.sampleRate) ?? DEFAULT_SAMPLE_RATE,
   };
 }
 

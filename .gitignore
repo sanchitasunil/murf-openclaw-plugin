@@ -1,14 +1,39 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+
+# Environment
 .env
 .env.local
 .env.*.local
-*.log
+
+# Editor / OS
 .DS_Store
-coverage
-_source-reference/
-audit.md
-*.tgz
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test artifacts
+coverage/
 *.mp3
+*.wav
+*.ogg
+*.flac
+
+# Packed tarballs
+*.tgz
+
+# Living spec & private notes (kept locally, not in repo)
 CLAUDE.md
 audit.md
+
+# Read-only source reference (only for local development; not part of repo)
+murf/

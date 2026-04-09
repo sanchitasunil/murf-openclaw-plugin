@@ -1,5 +1,5 @@
 /**
- * Pure HTTP client for the Murf Falcon / GEN2 TTS API.
+ * Pure HTTP client for the Murf Falcon TTS API.
  *
  * ZERO OpenClaw imports -- testable in isolation by mocking globalThis.fetch.
  *
@@ -59,7 +59,7 @@ export const MURF_API_REGIONS = [
 
 const MURF_REGIONS = new Set<string>(MURF_API_REGIONS);
 
-export const MURF_MODELS = ["FALCON", "GEN2"] as const;
+export const MURF_MODELS = ["FALCON"] as const;
 const MURF_MODEL_SET = new Set<string>(MURF_MODELS);
 
 const MURF_FORMATS = new Set(["MP3", "WAV", "OGG", "FLAC"]);
@@ -381,7 +381,7 @@ export function createFalconClient(opts: FalconClientOptions): FalconClient {
     const modelNorm = req.model.trim().toUpperCase();
     if (!MURF_MODEL_SET.has(modelNorm)) {
       throw new MurfBadRequestError(
-        `Unsupported model "${req.model}" (expected FALCON or GEN2)`,
+        `Unsupported model "${req.model}" (expected FALCON)`,
       );
     }
 

@@ -91,7 +91,7 @@ describe("createSynthesizeFn", () => {
     expect(result.voiceCompatible).toBe(false);
   });
 
-  // Voice-note format: FALCON->MP3, GEN2->OGG
+  // Voice-note format: FALCON only supports MP3 (FALCON returns HTTP 500 for OGG)
 
   it("requests MP3 for FALCON voice-note target", async () => {
     process.env.MURF_API_KEY = "test-key";
@@ -115,7 +115,7 @@ describe("createSynthesizeFn", () => {
     expect(result.voiceCompatible).toBe(true);
   });
 
-  it("requests OGG for GEN2 voice-note target", async () => {
+  it("forces MP3 for voice-note targets even when format override requests OGG", async () => {
     process.env.MURF_API_KEY = "test-key";
     const synthesizeMock = vi.fn(async () => ({
       audioBuffer: Buffer.from([1]),
@@ -125,16 +125,14 @@ describe("createSynthesizeFn", () => {
 
     const result = await synthesize(
       baseSynthReq({
-        providerConfig: { model: "GEN2" },
+        providerConfig: { format: "OGG" },
         target: "voice-note",
       }),
     );
 
     const req = synthesizeMock.mock.calls[0]![0] as FalconSynthesizeRequest;
-    expect(req.format).toBe("OGG");
-    expect(result.outputFormat).toBe("ogg");
-    expect(result.fileExtension).toBe(".ogg");
-    expect(result.voiceCompatible).toBe(true);
+    expect(req.format).toBe("MP3");
+    expect(result.outputFormat).toBe("mp3");
   });
 
   it("applies providerOverrides over providerConfig", async () => {
@@ -148,13 +146,13 @@ describe("createSynthesizeFn", () => {
     await synthesize(
       baseSynthReq({
         providerConfig: { voiceId: "en-US-natalie", model: "FALCON" },
-        providerOverrides: { voiceId: "en-US-jackson", model: "GEN2" },
+        providerOverrides: { voiceId: "en-US-jackson" },
       }),
     );
 
     const req = synthesizeMock.mock.calls[0]![0] as FalconSynthesizeRequest;
     expect(req.voiceId).toBe("en-US-jackson");
-    expect(req.model).toBe("GEN2");
+    expect(req.model).toBe("FALCON");
   });
 
   it("returns audioBuffer from the falcon client", async () => {

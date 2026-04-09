@@ -73,20 +73,20 @@ describe("normalizeMurfProviderConfig", () => {
 
   it("reads from rawConfig.murf (flat shorthand)", () => {
     const config = normalizeMurfProviderConfig({
-      murf: { voiceId: "en-US-jackson", model: "gen2" },
+      murf: { voiceId: "en-US-jackson", model: "falcon" },
     });
     expect(config.voiceId).toBe("en-US-jackson");
-    expect(config.model).toBe("GEN2");
-    expect(config.sampleRate).toBe(44_100);
+    expect(config.model).toBe("FALCON");
+    expect(config.sampleRate).toBe(24_000);
   });
 
   it("reads from rawConfig.providers.murf (nested)", () => {
     const config = normalizeMurfProviderConfig({
-      providers: { murf: { voiceId: "Matthew", model: "gen2" } },
+      providers: { murf: { voiceId: "Matthew", model: "falcon" } },
     });
     expect(config.voiceId).toBe("Matthew");
-    expect(config.model).toBe("GEN2");
-    expect(config.sampleRate).toBe(44_100);
+    expect(config.model).toBe("FALCON");
+    expect(config.sampleRate).toBe(24_000);
   });
 
   it("coerces numeric strings for sampleRate", () => {
@@ -99,11 +99,6 @@ describe("normalizeMurfProviderConfig", () => {
   it("uses FALCON default sample rate (24000)", () => {
     const config = normalizeMurfProviderConfig({ murf: { model: "FALCON" } });
     expect(config.sampleRate).toBe(24_000);
-  });
-
-  it("uses GEN2 default sample rate (44100)", () => {
-    const config = normalizeMurfProviderConfig({ murf: { model: "GEN2" } });
-    expect(config.sampleRate).toBe(44_100);
   });
 });
 
@@ -124,8 +119,8 @@ describe("readMurfProviderConfig", () => {
   });
 
   it("normalizes model casing", () => {
-    const config = readMurfProviderConfig({ model: "gen2" });
-    expect(config.model).toBe("GEN2");
+    const config = readMurfProviderConfig({ model: "falcon" });
+    expect(config.model).toBe("FALCON");
   });
 });
 
@@ -209,11 +204,11 @@ describe("parseMurfDirectiveToken", () => {
   it("handles model key", () => {
     const result = parseMurfDirectiveToken({
       key: "model",
-      value: "GEN2",
+      value: "FALCON",
       policy: ALLOW_ALL_POLICY,
     });
     expect(result.handled).toBe(true);
-    expect(result.overrides).toMatchObject({ model: "GEN2" });
+    expect(result.overrides).toMatchObject({ model: "FALCON" });
   });
 
   it("handles rate with validation", () => {
@@ -349,13 +344,13 @@ describe("resolveTalkConfig", () => {
   it("preserves base when talk config has no overrides", () => {
     const result = resolveTalkConfig({
       cfg: {} as never,
-      baseTtsConfig: { murf: { voiceId: "en-US-natalie", model: "GEN2" } },
+      baseTtsConfig: { murf: { voiceId: "en-US-natalie", model: "FALCON" } },
       talkProviderConfig: {},
       timeoutMs: 10_000,
     });
     expect(result).toMatchObject({
       voiceId: "en-US-natalie",
-      model: "GEN2",
+      model: "FALCON",
     });
   });
 });
@@ -370,7 +365,7 @@ describe("resolveTalkOverrides", () => {
       talkProviderConfig: {},
       params: {
         voiceId: "en-US-jackson",
-        model: "gen2",
+        model: "falcon",
         style: "Newscast",
         rate: 10,
         pitch: -5,
@@ -379,7 +374,7 @@ describe("resolveTalkOverrides", () => {
     });
     expect(result).toMatchObject({
       voiceId: "en-US-jackson",
-      model: "GEN2",
+      model: "FALCON",
       style: "Newscast",
       rate: 10,
       pitch: -5,

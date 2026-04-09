@@ -65,7 +65,7 @@ export default definePluginEntry({
   id: "murf-tts",
   name: "Murf Falcon TTS",
   description:
-    "High-quality text-to-speech via Murf AI (FALCON and GEN2 models)",
+    "High-quality text-to-speech via Murf AI Falcon (low-latency streaming)",
   register(api) {
     api.registerSpeechProvider(provider);
   },

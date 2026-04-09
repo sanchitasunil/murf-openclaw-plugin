@@ -1,95 +1,126 @@
 # openclaw-murf-tts
 
-OpenClaw speech-provider plugin that calls Murf's streaming TTS endpoint `/v1/speech/stream` to synthesize speech in OpenClaw workspaces. [Murf AI](https://murf.ai) provides AI voice generation for applications, media, and assistants. Configure the **FALCON** model for low latency (~130 ms) or **GEN2** for higher-fidelity output instead of running your own TTS stack.
+OpenClaw speech-provider plugin for [Murf AI](https://murf.ai) Falcon TTS.
+
+Adds the `murf` speech provider to your OpenClaw workspace, calling Murf's
+streaming `/v1/speech/stream` endpoint with the **FALCON** model
+(low-latency, ~130 ms) so messages get high-quality, natural-sounding voice
+output without you running your own TTS stack.
+
+- 150+ voices across 35 languages
+- 12 regional API endpoints
+- Built-in retry/backoff for `429`/`5xx`
+- Typed errors (`MurfAuthError`, `MurfRateLimitError`, ...) for clean
+  failure handling
+- API key never logged
 
 ## Install
 
-ClawHub is the preferred path: the OpenClaw CLI resolves the package from the registry first, then falls back to npm.
-
 ```bash
-openclaw plugins install @sanchitasunil/openclaw-murf-tts
+openclaw plugins install openclaw-murf-tts
 ```
 
+Or directly from npm:
+
 ```bash
-npm install @sanchitasunil/openclaw-murf-tts
+npm install openclaw-murf-tts
 ```
 
-`openclaw` is a peer dependency; your gateway or workspace already supplies it.
+`openclaw` is a peer dependency -- your gateway/workspace already provides it.
 
 ## Quick start
 
-1. Create a Murf API key in the [Murf API dashboard](https://murf.ai/api/dashboard) (see also [Generating API key](https://help.murf.ai/generating-api-key)).
-2. Set `MURF_API_KEY` in the environment your OpenClaw gateway runs under (or put `apiKey` in config; see below).
-3. Add a minimal `messages.tts` block and enable the plugin. Example `openclaw.json` (JSON5 is also supported):
+1. Get a Murf API key from the [Murf API dashboard](https://murf.ai/api/dashboard).
+2. Set the key in your environment:
+   ```bash
+   export MURF_API_KEY="your_key_here"
+   ```
+3. Add the provider to your OpenClaw config (`openclaw.json` or `openclaw.json5`):
+   ```json
+   {
+     "messages": {
+       "tts": {
+         "provider": "murf",
+         "providers": {
+           "murf": {}
+         }
+       }
+     },
+     "plugins": {
+       "enabled": true,
+       "entries": {
+         "murf-tts": { "enabled": true }
+       }
+     }
+   }
+   ```
+4. Restart the gateway:
+   ```bash
+   openclaw gateway restart
+   ```
+5. Verify it loaded:
+   ```bash
+   openclaw plugins list
+   openclaw plugins doctor
+   ```
 
-```json
-{
-  "messages": {
-    "tts": {
-      "provider": "murf",
-      "providers": {
-        "murf": {}
-      }
-    }
-  },
-  "plugins": {
-    "enabled": true,
-    "entries": {
-      "murf": { "enabled": true }
-    }
-  }
-}
+With an empty `murf: {}` block, the plugin uses sensible defaults and reads
+the API key from `MURF_API_KEY`. See `openclaw.config.example.json5` for
+a fully annotated example.
+
+## Configuration
+
+All fields go under `messages.tts.providers.murf`. Every field is optional;
+defaults are shown below.
+
+| Field        | Type   | Default          | Description |
+| ------------ | ------ | ---------------- | ----------- |
+| `apiKey`     | string | *(env var)*      | Murf API key. Falls back to `MURF_API_KEY`. Never commit this. |
+| `voiceId`    | string | `en-US-natalie`  | Murf voice identifier. |
+| `model`      | string | `FALCON`         | Only `FALCON` is supported in this release. |
+| `locale`     | string | `en-US`          | BCP-47 locale code. |
+| `style`      | string | `Conversation`   | Speaking style (e.g. `Conversation`, `Newscast`). |
+| `rate`       | number | `0`              | Speech rate from `-50` to `50`. |
+| `pitch`      | number | `0`              | Pitch from `-50` to `50`. |
+| `region`     | string | `global`         | API region. See list below. |
+| `format`     | string | `MP3`            | `MP3`, `WAV`, `OGG`, or `FLAC`. Voice-note targets always use `MP3` (FALCON returns HTTP 500 for OGG). |
+| `sampleRate` | number | `24000`          | Hz. One of `8000`, `16000`, `24000`, `44100`, `48000`. |
+
+**Regions:** `au`, `ca`, `eu-central`, `global`, `in`, `jp`, `kr`, `me`,
+`sa-east`, `uk`, `us-east`, `us-west`.
+
+## In-message directives
+
+When OpenClaw allows directive overrides, you can tweak Murf parameters
+inline per message:
+
+```
+@tts voiceid=en-US-jackson style=Newscast rate=10 pitch=-5
 ```
 
-With only `{}` under `murf`, the provider uses defaults and reads the key from `MURF_API_KEY`.
-
-4. Restart the gateway: `openclaw gateway restart`.
-5. Verify: `/tts status`.
-
-## Configuration reference
-
-Provider settings live under `messages.tts.providers.murf`. You may also use a flat `murf` object at the top level of the config file; both normalize to the same provider block.
-
-| Field | Type | Default | Description |
-| ----- | ---- | ------- | ----------- |
-| **apiKey** | string | *(none)* | Murf API key. **Required** for synthesis unless `MURF_API_KEY` is set in the environment (same value). Never commit real keys. |
-| voiceId | string | `en-US-natalie` | Murf voice identifier. |
-| model | string | `FALCON` | `FALCON` (low latency) or `GEN2` (studio quality). |
-| locale | string | `en-US` | BCP-47 locale (e.g. `en-US`). |
-| style | string | `Conversation` | Speaking style (e.g. `Conversation`, `Newscast`). |
-| rate | number | `0` | Speech rate from `-50` to `50` (`0` = normal). |
-| pitch | number | `0` | Pitch from `-50` to `50` (`0` = normal). |
-| region | string | `global` | Regional API host (e.g. `global`, `us-east`, `eu-central`). |
-| format | string | `MP3` | Output container: `MP3`, `WAV`, `OGG`, or `FLAC`. Voice-note targets override this per model (FALCON → MP3, GEN2 → OGG). |
-| sampleRate | number | `24000` (FALCON), `44100` (GEN2) | Sample rate in Hz. Allowed values: `8000`, `16000`, `24000`, `44100`, `48000`. |
-
-Talk mode can overlay `talk.providers.murf` (and related resolve hooks) on top of the base TTS config. In-message directive tokens can override `voiceId`, `model`, `style`, `rate`, `pitch`, `locale`, and `format` when your OpenClaw policy allows it.
+Supported keys: `voiceid`, `model`, `style`, `rate`, `pitch`, `locale`,
+`format`. Each key respects your OpenClaw `SpeechModelOverridePolicy` flags.
 
 ## Voices
 
-- In OpenClaw, list catalog voices with: `openclaw tts voices` (with the Murf provider selected and a valid key).
-- Browse and pick IDs from Murf's [voice offering](https://murf.ai/api) / product UI if you prefer a visual catalog.
+List the catalog with the Murf provider selected and a valid key:
 
-For programmatic use inside a checkout of this repo, `src/test-api.ts` re-exports `createListVoicesFn` from `src/list-voices.ts`: supply a Falcon client factory, then call the returned `listVoices` with `apiKey` and optional `providerConfig` (same fields as above). Keys resolve in order: request `apiKey`, then config `apiKey`, then `MURF_API_KEY`. The npm tarball's main entry is the OpenClaw plugin only.
+```bash
+openclaw tts voices
+```
 
-## Channel-specific notes
-
-### Discord voice
-
-`channels.discord.voice.tts` can override `messages.tts` for Discord-only voice playback (provider, provider block, auto mode, etc.). Use it when you want Murf settings or another provider only in Discord voice channels without changing global TTS defaults.
-
-### Telephony
-
-For telephony targets, OpenClaw expects **LINEAR16** audio at **8000 Hz**. The host pipeline typically forces that format for PSTN-style channels regardless of your Murf `format` and `sampleRate` settings in `messages.tts.providers.murf`.
+Or browse them visually in the [Murf voice library](https://murf.ai/api).
+A voice ID looks like `en-US-natalie`, `en-UK-harry`, `es-ES-elvira`, etc.
 
 ## Troubleshooting
 
-| Symptom | What to try |
-| ------- | ----------- |
-| Plugin not loading | Run `openclaw plugins list`, confirm `@sanchitasunil/openclaw-murf-tts` is installed and the plugin entry is enabled; restart the gateway. |
-| 401 Unauthorized | Check `MURF_API_KEY` for leading/trailing whitespace or a stale key; confirm the key is active in the [Murf API dashboard](https://murf.ai/api/dashboard). |
-| Audio not playing in Telegram / WhatsApp | Voice-note style delivery depends on `voiceCompatible` and codec support; a **format** your channel cannot play will fail or silent-fail. Try `MP3` and align `sampleRate` with what the channel expects. |
-| Rate limited | The client retries HTTP **429** and **5xx** with exponential backoff (three attempts). If issues persist, check quota and usage on the Murf side. |
+| Symptom | Fix |
+| ------- | --- |
+| `Murf TTS is not configured` | Set `MURF_API_KEY` in your environment, or add `apiKey` under `messages.tts.providers.murf`. |
+| `Murf API rejected the credentials` | Key is invalid or expired. Regenerate it in the Murf dashboard. |
+| Plugin not loading | `openclaw plugins list` should show `murf-tts`. Check `openclaw plugins doctor` for errors. Restart the gateway after config edits. |
+| Audio doesn't play in Telegram / WhatsApp | Voice-note channels expect Opus/OGG, but FALCON only emits MP3. The plugin still returns playable MP3 audio -- it just won't render as a native voice-note bubble. |
+| Rate-limited errors | The client retries `429`/`5xx` automatically (3 attempts, exponential backoff). If it persists, check your Murf quota. |
 
 ## Development
 
@@ -101,9 +132,13 @@ pnpm build
 pnpm test
 ```
 
-Live integration tests in `tests/live/murf.live.test.ts` call the real Murf API. They run only when **`MURF_LIVE_TEST=1`** and a non-empty **`MURF_API_KEY`** are both set; otherwise that file’s suite is skipped. Example:
+Live tests in `tests/live/` hit the real Murf API. They self-skip unless
+both `MURF_LIVE_TEST=1` and `MURF_API_KEY` are set:
 
 ```bash
-MURF_LIVE_TEST=1 MURF_API_KEY=your_key pnpm exec vitest run tests/live/murf.live.test.ts
+MURF_LIVE_TEST=1 MURF_API_KEY=your_key pnpm test
 ```
 
+## License
+
+MIT. See [LICENSE](./LICENSE).

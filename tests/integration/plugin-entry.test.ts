@@ -25,7 +25,7 @@ describe("plugin entry", { timeout: 30_000 }, () => {
     expect(provider.id).toBe("murf");
     expect(provider.label).toBe("Murf");
     expect(provider.models).toContain("FALCON");
-    expect(provider.models).toContain("GEN2");
+    expect(provider.models).toHaveLength(1);
     expect(typeof provider.isConfigured).toBe("function");
     expect(typeof provider.synthesize).toBe("function");
     expect(typeof provider.listVoices).toBe("function");

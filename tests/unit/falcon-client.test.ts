@@ -84,18 +84,18 @@ describe("normalizeMurfModel", () => {
     expect(normalizeMurfModel("  ")).toBe("FALCON");
   });
 
-  it("uppercases valid models", () => {
+  it("uppercases the FALCON model", () => {
     expect(normalizeMurfModel("falcon")).toBe("FALCON");
-    expect(normalizeMurfModel("gen2")).toBe("GEN2");
+    expect(normalizeMurfModel("Falcon")).toBe("FALCON");
   });
 
   it("passes through unknown models trimmed", () => {
-    expect(normalizeMurfModel("gen3")).toBe("gen3");
+    expect(normalizeMurfModel("gen2")).toBe("gen2");
   });
 
-  it("exports both FALCON and GEN2 in MURF_MODELS", () => {
+  it("exports only FALCON in MURF_MODELS", () => {
     expect(MURF_MODELS).toContain("FALCON");
-    expect(MURF_MODELS).toContain("GEN2");
+    expect(MURF_MODELS).toHaveLength(1);
   });
 });
 

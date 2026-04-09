@@ -5,15 +5,12 @@
  * Translates OpenClaw's SpeechSynthesisRequest into FalconSynthesizeRequest,
  * and Falcon's response into OpenClaw's SpeechSynthesisResult.
  *
- * Voice-note format logic (non-negotiable):
- *   FALCON uses MP3 (FALCON returns HTTP 500 for OGG).
- *   GEN2 uses OGG.
- *   const voiceNoteFormat = effectiveModel === "FALCON" ? "MP3" : "OGG";
- *   const format = isVoiceNote ? voiceNoteFormat : requestedFormat;
+ * Voice-note format: FALCON only supports MP3 (FALCON returns HTTP 500 for OGG),
+ * so voice-note targets always receive MP3 audio.
  */
 
 import type { SpeechSynthesisRequest } from "openclaw/plugin-sdk/speech";
-import { asObject, trimToUndefined } from "openclaw/plugin-sdk/speech";
+import { trimToUndefined } from "openclaw/plugin-sdk/speech";
 
 import type { FalconClient } from "./falcon-client.js";
 import { normalizeFormat, normalizeMurfModel, normalizeMurfRegion } from "./falcon-client.js";
@@ -82,12 +79,11 @@ export function createSynthesizeFn(
     const modelOverride = trimToUndefined(overrides.model);
     const effectiveModel = normalizeMurfModel(modelOverride ?? config.model);
 
-    // Voice-note format logic: FALCON->MP3 (FALCON returns HTTP 500 for OGG), GEN2->OGG.
+    // Voice-note format: FALCON only supports MP3 (FALCON returns HTTP 500 for OGG).
     const isVoiceNote = req.target === "voice-note";
     const requestedFormat =
       normalizeFormat(overrides.format) ?? config.format;
-    const voiceNoteFormat = effectiveModel === "FALCON" ? "MP3" : "OGG";
-    const format = isVoiceNote ? voiceNoteFormat : requestedFormat;
+    const format = isVoiceNote ? "MP3" : requestedFormat;
 
     const client = getClient(apiKey, req.timeoutMs);
     const result = await client.synthesize({

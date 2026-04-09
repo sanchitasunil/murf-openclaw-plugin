@@ -19,7 +19,7 @@
           // Voice ID -- run `openclaw tts voices` to list available voices.
           "voiceId": "en-US-natalie",
 
-          // Model: "FALCON" (fast, ~130ms) or "GEN2" (studio quality).
+          // Model: "FALCON" (low-latency streaming, ~130 ms). Only model supported.
           "model": "FALCON",
 
           // BCP-47 locale code.
@@ -42,7 +42,7 @@
           "format": "MP3",
 
           // Sample rate in Hz: 8000, 16000, 24000, 44100, 48000
-          // Default: 24000 for FALCON, 44100 for GEN2
+          // Default: 24000 (FALCON)
           "sampleRate": 24000
         }
       }
