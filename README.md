@@ -138,7 +138,3 @@ both `MURF_LIVE_TEST=1` and `MURF_API_KEY` are set:
 ```bash
 MURF_LIVE_TEST=1 MURF_API_KEY=your_key pnpm test
 ```
-
-## License
-
-MIT. See [LICENSE](./LICENSE).
