@@ -1,5 +1,5 @@
 {
-  "name": "openclaw-murf-tts",
+  "name": "murf-tts",
   "version": "0.2.0",
   "description": "OpenClaw speech provider plugin for Murf Falcon TTS",
   "type": "module",

@@ -63,5 +63,5 @@ Adds the **murf** speech provider to your OpenClaw workspace. Every outbound mes
 
 - [Murf AI](https://murf.ai)
 - [Murf API docs](https://murf.ai/api/docs)
-- [npm package](https://www.npmjs.com/package/openclaw-murf-tts)
-- [GitHub](https://github.com/sanchitasunil/openclaw-murf-tts)
+- [npm package](https://www.npmjs.com/package/murf-tts)
+- [GitHub](https://github.com/sanchitasunil/murf-openclaw-plugin)

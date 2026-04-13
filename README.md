@@ -1,8 +1,6 @@
-# openclaw-murf-tts
+# murf-tts
 
-> **Community-managed plugin.** Maintained by [@sanchitasunil](https://github.com/sanchitasunil)
-> from a personal GitHub profile, not by the OpenClaw core team. File issues
-> and pull requests on this repo.
+> **Community-managed plugin to add Murf Falcon TTS to OpenClaw.**
 
 OpenClaw speech-provider plugin for [Murf AI](https://murf.ai) Falcon TTS.
 
@@ -21,13 +19,13 @@ output without you running your own TTS stack.
 ## Install
 
 ```bash
-openclaw plugins install openclaw-murf-tts
+openclaw plugins install murf-tts
 ```
 
 Or directly from npm:
 
 ```bash
-npm install openclaw-murf-tts
+npm install murf-tts
 ```
 
 `openclaw` is a peer dependency -- your gateway/workspace already provides it.
@@ -193,7 +191,3 @@ both `MURF_LIVE_TEST=1` and `MURF_API_KEY` are set:
 ```bash
 MURF_LIVE_TEST=1 MURF_API_KEY=your_key pnpm test
 ```
-
-## License
-
-MIT. See [LICENSE](./LICENSE).
