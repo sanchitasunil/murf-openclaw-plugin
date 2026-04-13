@@ -1,6 +1,6 @@
 {
   "name": "murf-tts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "OpenClaw speech provider plugin for Murf Falcon TTS",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -17,6 +17,14 @@
     "providers": [
       "murf"
     ],
+    "requiredEnvVars": [
+      "MURF_API_KEY"
+    ],
+    "providerAuthEnvVars": {
+      "murf": [
+        "MURF_API_KEY"
+      ]
+    },
     "compat": {
       "pluginApi": ">=2026.4.1",
       "minGatewayVersion": "2026.4.1"
