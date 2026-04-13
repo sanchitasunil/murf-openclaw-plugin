@@ -1,5 +1,9 @@
 # openclaw-murf-tts
 
+> **Community-managed plugin.** Maintained by [@sanchitasunil](https://github.com/sanchitasunil)
+> from a personal GitHub profile, not by the OpenClaw core team. File issues
+> and pull requests on this repo.
+
 OpenClaw speech-provider plugin for [Murf AI](https://murf.ai) Falcon TTS.
 
 Adds the `murf` speech provider to your OpenClaw workspace, calling Murf's

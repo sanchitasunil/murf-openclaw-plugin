@@ -90,7 +90,7 @@ describe("normalizeMurfModel", () => {
   });
 
   it("passes through unknown models trimmed", () => {
-    expect(normalizeMurfModel("gen2")).toBe("gen2");
+    expect(normalizeMurfModel("unknown")).toBe("unknown");
   });
 
   it("exports only FALCON in MURF_MODELS", () => {

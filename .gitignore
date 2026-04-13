@@ -31,9 +31,6 @@ coverage/
 # Packed tarballs
 *.tgz
 
-# Living spec & private notes (kept locally, not in repo)
-CLAUDE.md
-audit.md
-
 # Read-only source reference (only for local development; not part of repo)
 murf/
+CLAUDE.md
