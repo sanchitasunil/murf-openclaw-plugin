@@ -55,6 +55,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sanchitasunil/openclaw-murf-tts.git"
+    "url": "https://github.com/sanchitasunil/murf-openclaw-plugin.git"
   }
 }

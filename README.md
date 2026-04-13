@@ -34,48 +34,111 @@ npm install openclaw-murf-tts
 
 ## Quick start
 
+You can set everything up from the command line. No config-file editing
+required.
+
 1. Get a Murf API key from the [Murf API dashboard](https://murf.ai/api/dashboard).
-2. Set the key in your environment:
+
+2. Export the key in your shell:
+
    ```bash
+   # macOS / Linux
    export MURF_API_KEY="your_key_here"
+
+   # Windows PowerShell
+   $env:MURF_API_KEY = "your_key_here"
    ```
-3. Add the provider to your OpenClaw config (`openclaw.json` or `openclaw.json5`):
-   ```json
-   {
-     "messages": {
-       "tts": {
-         "provider": "murf",
-         "providers": {
-           "murf": {}
-         }
-       }
-     },
-     "plugins": {
-       "enabled": true,
-       "entries": {
-         "murf-tts": { "enabled": true }
-       }
-     }
-   }
+
+3. Enable the plugin and select Murf as the TTS provider:
+
+   ```bash
+   openclaw config set plugins.entries.murf-tts.enabled true
+   openclaw config set messages.tts.provider murf
    ```
+
 4. Restart the gateway:
+
    ```bash
    openclaw gateway restart
    ```
+
 5. Verify it loaded:
+
    ```bash
    openclaw plugins list
    openclaw plugins doctor
    ```
 
-With an empty `murf: {}` block, the plugin uses sensible defaults and reads
-the API key from `MURF_API_KEY`. See `openclaw.config.example.json5` for
-a fully annotated example.
+That's it -- the plugin runs with sensible defaults
+(`en-US-natalie` voice, FALCON model, MP3 output, 24 kHz).
 
-## Configuration
+## Customizing the voice
 
-All fields go under `messages.tts.providers.murf`. Every field is optional;
-defaults are shown below.
+Three options, from least invasive to most:
+
+### 1. Persist a setting with `openclaw config set`
+
+```bash
+openclaw config set messages.tts.providers.murf.voiceId en-US-jackson
+openclaw config set messages.tts.providers.murf.style Newscast
+openclaw config set messages.tts.providers.murf.rate 10
+openclaw config set messages.tts.providers.murf.region us-east
+```
+
+Restart the gateway after changes (`openclaw gateway restart`).
+
+### 2. Override per message with an in-message directive
+
+When OpenClaw allows directive overrides, you can tweak parameters inline
+for a single reply without touching config:
+
+```
+@tts voiceid=en-US-jackson style=Newscast rate=10 pitch=-5
+```
+
+Supported directive keys: `voiceid`, `model`, `style`, `rate`, `pitch`,
+`locale`, `format`. Each one respects your `SpeechModelOverridePolicy` flags.
+
+### 3. (Backup) Edit `openclaw.json` directly
+
+Only needed when you want to set many fields at once or lock something
+specific. All fields below live under `messages.tts.providers.murf`.
+
+<details>
+<summary>Example JSON config</summary>
+
+```json
+{
+  "messages": {
+    "tts": {
+      "provider": "murf",
+      "providers": {
+        "murf": {
+          "voiceId": "en-US-jackson",
+          "style": "Newscast",
+          "rate": 10,
+          "region": "us-east"
+        }
+      }
+    }
+  },
+  "plugins": {
+    "enabled": true,
+    "entries": {
+      "murf-tts": { "enabled": true }
+    }
+  }
+}
+```
+
+See `openclaw.config.example.json5` in the repo for a fully annotated version.
+
+</details>
+
+## Configuration reference
+
+All fields are optional; defaults are shown. You can set any of these with
+`openclaw config set messages.tts.providers.murf.<field> <value>`.
 
 | Field        | Type   | Default          | Description |
 | ------------ | ------ | ---------------- | ----------- |
@@ -93,18 +156,6 @@ defaults are shown below.
 **Regions:** `au`, `ca`, `eu-central`, `global`, `in`, `jp`, `kr`, `me`,
 `sa-east`, `uk`, `us-east`, `us-west`.
 
-## In-message directives
-
-When OpenClaw allows directive overrides, you can tweak Murf parameters
-inline per message:
-
-```
-@tts voiceid=en-US-jackson style=Newscast rate=10 pitch=-5
-```
-
-Supported keys: `voiceid`, `model`, `style`, `rate`, `pitch`, `locale`,
-`format`. Each key respects your OpenClaw `SpeechModelOverridePolicy` flags.
-
 ## Voices
 
 List the catalog with the Murf provider selected and a valid key:
@@ -120,7 +171,7 @@ A voice ID looks like `en-US-natalie`, `en-UK-harry`, `es-ES-elvira`, etc.
 
 | Symptom | Fix |
 | ------- | --- |
-| `Murf TTS is not configured` | Set `MURF_API_KEY` in your environment, or add `apiKey` under `messages.tts.providers.murf`. |
+| `Murf TTS is not configured` | Set `MURF_API_KEY` in your environment, or run `openclaw config set messages.tts.providers.murf.apiKey <key>`. |
 | `Murf API rejected the credentials` | Key is invalid or expired. Regenerate it in the Murf dashboard. |
 | Plugin not loading | `openclaw plugins list` should show `murf-tts`. Check `openclaw plugins doctor` for errors. Restart the gateway after config edits. |
 | Audio doesn't play in Telegram / WhatsApp | Voice-note channels expect Opus/OGG, but FALCON only emits MP3. The plugin still returns playable MP3 audio -- it just won't render as a native voice-note bubble. |
@@ -129,8 +180,8 @@ A voice ID looks like `en-US-natalie`, `en-UK-harry`, `es-ES-elvira`, etc.
 ## Development
 
 ```bash
-git clone https://github.com/sanchitasunil/openclaw-murf-tts.git
-cd openclaw-murf-tts
+git clone https://github.com/sanchitasunil/murf-openclaw-plugin.git
+cd murf-openclaw-plugin
 pnpm install
 pnpm build
 pnpm test
@@ -142,3 +193,7 @@ both `MURF_LIVE_TEST=1` and `MURF_API_KEY` are set:
 ```bash
 MURF_LIVE_TEST=1 MURF_API_KEY=your_key pnpm test
 ```
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
