@@ -1,6 +1,6 @@
 {
   "name": "murf-tts",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "OpenClaw speech provider plugin for Murf Falcon TTS",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -8,8 +8,7 @@
   "files": [
     "dist",
     "openclaw.plugin.json",
-    "README.md",
-    "LICENSE"
+    "README.md"
   ],
   "openclaw": {
     "extensions": [
@@ -52,7 +51,7 @@
     "falcon"
   ],
   "author": "Sanchita Sunil",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "https://github.com/sanchitasunil/murf-openclaw-plugin.git"

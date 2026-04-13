@@ -1,6 +1,16 @@
+---
+name: Murf Falcon TTS
+slug: murf-tts
+description: High-quality text-to-speech for OpenClaw via Murf AI Falcon (low-latency streaming).
+required_env:
+  - MURF_API_KEY
+---
+
 # Murf Falcon TTS
 
 High-quality text-to-speech for OpenClaw via [Murf AI](https://murf.ai).
+
+> **Required:** `MURF_API_KEY` -- get one from the [Murf API dashboard](https://murf.ai/api/dashboard).
 
 ## What it does
 

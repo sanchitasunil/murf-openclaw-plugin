@@ -1,11 +1,12 @@
 {
   "id": "murf-tts",
   "name": "Murf Falcon TTS",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "High-quality text-to-speech via Murf AI Falcon (low-latency streaming)",
   "contracts": {
     "speechProviders": ["murf"]
   },
+  "requiredEnvVars": ["MURF_API_KEY"],
   "providerAuthEnvVars": {
     "murf": ["MURF_API_KEY"]
   },
