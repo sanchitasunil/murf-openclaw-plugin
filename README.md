@@ -1,4 +1,4 @@
-# murf-tts
+# openclaw-murf-tts
 
 > **Community-managed plugin to add Murf Falcon TTS to OpenClaw.**
 
@@ -19,13 +19,13 @@ output without you running your own TTS stack.
 ## Install
 
 ```bash
-openclaw plugins install murf-tts
+openclaw plugins install openclaw-murf-tts
 ```
 
 Or directly from npm:
 
 ```bash
-npm install murf-tts
+npm install openclaw-murf-tts
 ```
 
 `openclaw` is a peer dependency -- your gateway/workspace already provides it.
@@ -50,7 +50,7 @@ required.
 3. Enable the plugin and select Murf as the TTS provider:
 
    ```bash
-   openclaw config set plugins.entries.murf-tts.enabled true
+   openclaw config set plugins.entries.openclaw-murf-tts.enabled true
    openclaw config set messages.tts.provider murf
    ```
 
@@ -123,7 +123,7 @@ specific. All fields below live under `messages.tts.providers.murf`.
   "plugins": {
     "enabled": true,
     "entries": {
-      "murf-tts": { "enabled": true }
+      "openclaw-murf-tts": { "enabled": true }
     }
   }
 }
@@ -171,7 +171,7 @@ A voice ID looks like `en-US-natalie`, `en-UK-harry`, `es-ES-elvira`, etc.
 | ------- | --- |
 | `Murf TTS is not configured` | Set `MURF_API_KEY` in your environment, or run `openclaw config set messages.tts.providers.murf.apiKey <key>`. |
 | `Murf API rejected the credentials` | Key is invalid or expired. Regenerate it in the Murf dashboard. |
-| Plugin not loading | `openclaw plugins list` should show `murf-tts`. Check `openclaw plugins doctor` for errors. Restart the gateway after config edits. |
+| Plugin not loading | `openclaw plugins list` should show `openclaw-murf-tts`. Check `openclaw plugins doctor` for errors. Restart the gateway after config edits. |
 | Audio doesn't play in Telegram / WhatsApp | Voice-note channels expect Opus/OGG, but FALCON only emits MP3. The plugin still returns playable MP3 audio -- it just won't render as a native voice-note bubble. |
 | Rate-limited errors | The client retries `429`/`5xx` automatically (3 attempts, exponential backoff). If it persists, check your Murf quota. |
 

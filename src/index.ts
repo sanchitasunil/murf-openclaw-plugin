@@ -62,7 +62,7 @@ const provider: SpeechProviderPlugin = {
 // ---------------------------------------------------------------------------
 
 export default definePluginEntry({
-  id: "murf-tts",
+  id: "openclaw-murf-tts",
   name: "Murf Falcon TTS",
   description:
     "High-quality text-to-speech via Murf AI Falcon (low-latency streaming)",

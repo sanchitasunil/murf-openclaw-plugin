@@ -5,7 +5,7 @@ describe("plugin entry", { timeout: 30_000 }, () => {
     const mod = await import("../../src/index.js");
     const entry = mod.default;
 
-    expect(entry.id).toBe("murf-tts");
+    expect(entry.id).toBe("openclaw-murf-tts");
     expect(entry.name).toBe("Murf Falcon TTS");
     expect(typeof entry.description).toBe("string");
     expect(typeof entry.register).toBe("function");

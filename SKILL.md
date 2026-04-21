@@ -1,6 +1,6 @@
 ---
 name: Murf Falcon TTS
-slug: murf-tts
+slug: openclaw-murf-tts
 description: High-quality text-to-speech for OpenClaw via Murf AI Falcon (low-latency, ~130 ms).
 required_env:
   - MURF_API_KEY
@@ -73,5 +73,5 @@ Adds the **murf** speech provider to your OpenClaw workspace. Every outbound mes
 
 - [Murf AI](https://murf.ai)
 - [Murf API docs](https://murf.ai/api/docs)
-- [npm package](https://www.npmjs.com/package/murf-tts)
+- [npm package](https://www.npmjs.com/package/openclaw-murf-tts)
 - [GitHub](https://github.com/sanchitasunil/murf-openclaw-plugin)
