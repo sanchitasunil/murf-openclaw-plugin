@@ -1,7 +1,7 @@
 {
   "id": "murf-tts",
   "name": "Murf Falcon TTS",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "High-quality text-to-speech via Murf AI Falcon (low-latency, ~130 ms)",
   "contracts": {
     "speechProviders": ["murf"]
