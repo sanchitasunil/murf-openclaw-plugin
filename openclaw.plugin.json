@@ -1,8 +1,8 @@
 {
   "id": "murf-tts",
   "name": "Murf Falcon TTS",
-  "version": "0.2.4",
-  "description": "High-quality text-to-speech via Murf AI Falcon (low-latency streaming)",
+  "version": "0.2.5",
+  "description": "High-quality text-to-speech via Murf AI Falcon (low-latency, ~130 ms)",
   "contracts": {
     "speechProviders": ["murf"]
   },
@@ -22,7 +22,7 @@
     },
     "model": {
       "label": "Model",
-      "help": "FALCON (low-latency streaming, ~130 ms)"
+      "help": "FALCON (low-latency, ~130 ms)"
     },
     "region": {
       "label": "API region",
@@ -44,7 +44,7 @@
       "model": {
         "type": "string",
         "enum": ["FALCON"],
-        "description": "TTS model: FALCON (low-latency streaming)"
+        "description": "TTS model: FALCON (low-latency)"
       },
       "locale": {
         "type": "string",

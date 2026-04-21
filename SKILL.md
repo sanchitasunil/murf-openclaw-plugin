@@ -1,7 +1,7 @@
 ---
 name: Murf Falcon TTS
 slug: murf-tts
-description: High-quality text-to-speech for OpenClaw via Murf AI Falcon (low-latency streaming).
+description: High-quality text-to-speech for OpenClaw via Murf AI Falcon (low-latency, ~130 ms).
 required_env:
   - MURF_API_KEY
 ---
