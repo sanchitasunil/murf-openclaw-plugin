@@ -1,7 +1,7 @@
 {
   "id": "openclaw-murf-tts",
   "name": "Murf Falcon TTS",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "High-quality text-to-speech via Murf AI Falcon (low-latency, ~130 ms)",
   "contracts": {
     "speechProviders": ["murf"]
@@ -10,6 +10,22 @@
   "providerAuthEnvVars": {
     "murf": ["MURF_API_KEY"]
   },
+  "providerAuthChoices": [
+    {
+      "provider": "murf",
+      "method": "api-key",
+      "choiceId": "murf-api-key",
+      "choiceLabel": "Murf",
+      "choiceHint": "Murf API key",
+      "groupId": "murf",
+      "groupLabel": "Murf",
+      "groupHint": "Murf API key",
+      "optionKey": "murfApiKey",
+      "cliFlag": "--murf-api-key",
+      "cliOption": "--murf-api-key <key>",
+      "cliDescription": "Murf API key"
+    }
+  ],
   "uiHints": {
     "apiKey": {
       "label": "API key",
