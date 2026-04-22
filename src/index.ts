@@ -65,7 +65,7 @@ export default definePluginEntry({
   id: "openclaw-murf-tts",
   name: "Murf Falcon TTS",
   description:
-    "High-quality text-to-speech via Murf AI Falcon (low-latency streaming)",
+    "High-quality text-to-speech via Murf AI Falcon (low-latency, ~130 ms)",
   register(api) {
     api.registerSpeechProvider(provider);
   },

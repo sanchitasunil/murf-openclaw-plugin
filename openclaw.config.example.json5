@@ -19,7 +19,7 @@
           // Voice ID -- run `openclaw tts voices` to list available voices.
           "voiceId": "en-US-natalie",
 
-          // Model: "FALCON" (low-latency streaming, ~130 ms). Only model supported.
+          // Model: "FALCON" (low-latency, ~130 ms). Only model supported.
           "model": "FALCON",
 
           // BCP-47 locale code.
@@ -49,11 +49,11 @@
     }
   },
 
-  // Enable the murf plugin.
+  // Enable the openclaw-murf-tts plugin.
   "plugins": {
     "enabled": true,
     "entries": {
-      "murf": {
+      "openclaw-murf-tts": {
         "enabled": true
       }
     }
