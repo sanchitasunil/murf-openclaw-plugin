@@ -112,8 +112,6 @@ openclaw tts voices
 
 ## Links
 
-- [Plugin on ClawHub](https://clawhub.ai/plugins/openclaw-murf-tts)
-- [Package on npm](https://www.npmjs.com/package/openclaw-murf-tts)
 - [Murf API](https://murf.ai/api)
 - [Murf API dashboard](https://murf.ai/api/dashboard)
 - [Murf Falcon voice library](https://murf.ai/api/products/text-to-speech/Falcon?utm_source=murf_api_docs)
