@@ -1,9 +1,5 @@
 # openclaw-murf-tts
 
-[![npm version](https://img.shields.io/npm/v/openclaw-murf-tts.svg)](https://www.npmjs.com/package/openclaw-murf-tts)
-[![ClawHub](https://img.shields.io/badge/ClawHub-openclaw--murf--tts-blue)](https://clawhub.ai/plugins/openclaw-murf-tts)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
 > **Community-managed plugin that adds Murf Falcon TTS to OpenClaw.**
 
 OpenClaw speech-provider plugin for [Murf AI](https://murf.ai/api). Adds the `murf` speech provider to your OpenClaw workspace, calling the **FALCON** model (low-latency, ~130 ms) for high-quality, natural-sounding voice output. No local TTS stack required.

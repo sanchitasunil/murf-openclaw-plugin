@@ -1,6 +1,6 @@
 {
   "name": "openclaw-murf-tts",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "OpenClaw TTS plugin for Murf AI. Low-latency neural text-to-speech via the Falcon model with 150+ AI voices, 35 languages, and 12 regional endpoints. Voice-agent and Discord/Telegram/Matrix voice-note ready.",
   "type": "module",
   "main": "./dist/index.mjs",
